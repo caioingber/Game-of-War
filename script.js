@@ -20,32 +20,45 @@ Create a cardsInPlay array
 Play new round --> remove one card from the top of the array ".pop()" for each player and flipCard face up
 Compare ranks --> compare the ranks of each card in the cardsInPlay array
     if either Player's card outranks the other, player become roundWinner
-    Print message "roundWinner + wins + roundNumber. Cards played
+    Print message "roundWinner + wins + roundNumber." "Cards played: pOneCard.attributes + pTwoCard.attributes"
     Both cards then go into the winning players array,
+    Print message" PlayerOne now has playerOne.length cards, playerTwo now has playerTwo.length cards"
     if playerOneCard === playerTwoCard, play war (function must be declared globally), see below section for info
-
-
 
 
 */
 
-let mainDeck = [];
 
-let playerOne = [];
-let playerTwo = [];
 
-let POneCard;
-let PTwoCard;
-let roundWinner;
-let roundNumber = 0;
+let startDeck = [];
 
-let cardsInPlay = [];
-let warCards = [];
+let suits = ['◆','❥', '♣', '♠']
+let values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
 
-function createDeck();
+function createDeck () {
+    for (i=0; i < suits.length; i++) {
+        for (j=0; j < values.length; j++) {
+            let card = {suit: suits[i], values: values[j], rank: j + 1};
+            startDeck.push(card);
+        }
+    }
+    return startDeck;
+}
 
-function shuffle();
 
-function dealHands();
-function compareRank();
+// let playerOne = [];
+// let playerTwo = [];
+
+// let POneCard;
+// let PTwoCard;
+// let roundWinner;
+// let roundNumber = 0;
+
+// let cardsInPlay = [];
+// let warCards = [];
+
+// function shuffle()
+
+// function dealHands()
+// function compareRank();
 
