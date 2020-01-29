@@ -73,11 +73,21 @@ function playRound() {
     }
 }
 
-function flipCards () {
+function flipCards() {
     cardsInPlayOne.unshift(playerOne[0]);
     shift.playerOne;
     cardsInPlayTwo.unshift(playerTwo[0]);
     shift.playerTwo;
+}
+
+function deal(startDeck) {
+    //Shuffle
+    for (let i = startDeck.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = startDeck[i];
+        startDeck[i] = startDeck[j];
+        startDeck[j] = temp;
+    }
 }
 
 // let POneCard;
