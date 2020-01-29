@@ -35,6 +35,10 @@ let startDeck = [];
 let suits = ['◆','❥', '♣', '♠']
 let values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
 
+let playerOne = [];
+let playerTwo = [];
+let cardsInPlay = [];
+
 function createDeck () {
     for (i=0; i < suits.length; i++) {
         for (j=0; j < values.length; j++) {
@@ -45,9 +49,33 @@ function createDeck () {
     return startDeck;
 }
 
+function playWar() {
+    
+}
 
-// let playerOne = [];
-// let playerTwo = [];
+function compare() {
+    if (cardsInPlay[0].rank > cardsInPlay[1].rank) {
+        playerOne.push(cardsInPlay[0], cardsInPlay[1]);
+        cardsInPlay.pop();
+        cardsInPlay.pop();
+    } else if (cardsInPlay[0].rank < cardsInPlay[1].rank) {
+        playerTwo.push(cardsInPlay[0], cardsInPlay[1]);
+        cardsInPlay.pop();
+        cardsInPlay.pop();
+    } else {
+        playWar();
+    }
+}
+
+function playCards () {
+    cardsInPlay.push(playerOne[0]);
+    shift.playerOne;
+    cardsInPlay.push(playerTwo[0]);
+    shift.playerOne;
+    compare();
+}
+
+
 
 // let POneCard;
 // let PTwoCard;
