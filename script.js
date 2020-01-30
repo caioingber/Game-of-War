@@ -27,9 +27,6 @@ Compare ranks --> compare the ranks of each card in the cardsInPlay array
 
 
 */
-
-
-
 let startDeck = [];
 
 let suits = ['◆','♥️', '♣', '♠']
@@ -54,6 +51,7 @@ function playRound() {
         playerOne.push(cardsInPlayOne[0], cardsInPlayTwo[0]);
         cardsInPlayOne.pop();
         cardsInPlayTwo.pop();
+        console.log()
     } else if (cardsInPlayOne[0].rank < cardsInPlayTwo[0].rank) {
         playerTwo.push(cardsInPlayOne[0], cardsInPlayTwo[0]);
         cardsInPlayOne.pop();
@@ -69,7 +67,7 @@ function flipCards() {
     console.log(`PlayerOne flipped ${cardsInPlayOne[0].value} of ${cardsInPlayOne[0].suit}`)
     cardsInPlayTwo.unshift(playerTwo[0]);
     playerTwo.shift();
-    console.log(`PlayerOne flipped ${cardsInPlayTwo[0].value} of ${cardsInPlayTwo[0].suit}`)
+    console.log(`PlayerTwo flipped ${cardsInPlayTwo[0].value} of ${cardsInPlayTwo[0].suit}`)
 }
 
 function shuffle() {
