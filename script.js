@@ -49,11 +49,13 @@ function playWar() {
     console.log("clare")
     flipCards();
     console.log("War!")
+    showFlipped();
 }
 
 function playRound() {
     round += 1;
     flipCards();
+    showFlipped();
     if (cardsInPlayOne[0].rank > cardsInPlayTwo[0].rank) {
         playerOne.push(cardsInPlayOne[0], cardsInPlayTwo[0]);
         cardsInPlayOne.pop();
@@ -71,8 +73,6 @@ function playRound() {
     }
 }
 
-//Currently producing infinite loop, playWar definition has not been complete
-
 function checkForWinner() {
     if (playerOne.length === 0) {
         console.log("Congratulations, PlayerTwo!")
@@ -86,25 +86,27 @@ function checkForWinner() {
 function flipCards() {
     cardsInPlayOne.unshift(playerOne[0]);
     playerOne.shift();
-    // console.log(`PlayerOne flipped ${cardsInPlayOne[0].value} of ${cardsInPlayOne[0].suit}`)
     cardsInPlayTwo.unshift(playerTwo[0]);
-    playerTwo.shift();
-    // console.log(`PlayerTwo flipped ${cardsInPlayTwo[0].value} of ${cardsInPlayTwo[0].suit}`)
+    playerTwo.shift();   
+}
+
+function showFlipped () {
+    console.log(`PlayerOne flipped ${cardsInPlayOne[0].value} of ${cardsInPlayOne[0].suit}\n\nPlayerTwo flipped ${cardsInPlayTwo[0].value} of ${cardsInPlayTwo[0].suit}`)
 }
 
 function shuffle() {
     //Shuffle
-    for (let i = startDeck.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        let holder = startDeck[i];
-        startDeck[i] = startDeck[j];
-        startDeck[j] = holder;
+    for (let i = deck.length - 1; i >= 0; i--) {
+        let j = Math.floor(Math.random() * (i));
+        let holder = deck[i];
+        deck[i] = deck[j];
+        deck[j] = holder;
     }
-    for (let i = 0; i < startDeck.length; i++) {
+    for (let i = 0; i < deck.length; i++) {
         if (i % 2 === 0) {
-            playerOne.unshift(startDeck[i])
+            playerOne.unshift(deck[i])
         } else {
-            playerTwo.unshift(startDeck[i])
+            playerTwo.unshift(deck[i])
         } 
     }
     playRound();
@@ -114,10 +116,18 @@ function createDeck () {
     for (i=0; i < suits.length; i++) {
         for (j=0; j < value.length; j++) {
             let card = {suit: suits[i], value: value[j], rank: j + 2};
-            startDeck.push(card);
+            deck.push(card);
         }
     }
-    return startDeck;
+    return deck;
+}
+
+function newGame() {
+    deck = [];
+    playerOne = [];
+    playerTwo = [];
+    createDeck();
+    shuffle();
 }
 
 createDeck();
