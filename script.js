@@ -27,7 +27,7 @@ Compare ranks --> compare the ranks of each card in the cardsInPlay array
 
 
 */
-let startDeck = [];
+let deck = [];
 
 let suits = ['◆','♥️', '♣', '♠']
 let value = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
@@ -37,6 +37,8 @@ let playerTwo = [];
 
 let cardsInPlayOne = [];
 let cardsInPlayTwo = [];
+
+let round = 0;
 
 function playWar() {
     flipCards();
@@ -50,18 +52,19 @@ function playWar() {
 }
 
 function playRound() {
+    round += 1;
     flipCards();
     if (cardsInPlayOne[0].rank > cardsInPlayTwo[0].rank) {
         playerOne.push(cardsInPlayOne[0], cardsInPlayTwo[0]);
         cardsInPlayOne.pop();
         cardsInPlayTwo.pop();
-        console.log(`PlayerOne wins the round! \n\n  PlayerOne: ${playerOne.length} Cards \n  PlayerTwo: ${playerTwo.length} cards`)
+        console.log(`PlayerOne wins Round ${round}! \n\n  PlayerOne: ${playerOne.length} Cards \n  PlayerTwo: ${playerTwo.length} cards`)
         checkForWinner();
     } else if (cardsInPlayOne[0].rank < cardsInPlayTwo[0].rank) {
         playerTwo.push(cardsInPlayOne[0], cardsInPlayTwo[0]);
         cardsInPlayOne.pop();
         cardsInPlayTwo.pop();
-        console.log(`PlayerTwo wins the round! \n\n  PlayerOne: ${playerOne.length} Cards \n  PlayerTwo: ${playerTwo.length} cards`)
+        console.log(`PlayerTwo wins Round ${round}! \n\n  PlayerOne: ${playerOne.length} Cards \n  PlayerTwo: ${playerTwo.length} cards`)
         checkForWinner();
     } else {
         playWar();
