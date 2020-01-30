@@ -32,6 +32,7 @@ let deck = [];
 let suits = ['◆','♥️', '♣', '♠']
 let value = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
 
+let warPile = [];
 let playerOne = [];
 let playerTwo = [];
 
@@ -40,46 +41,54 @@ let cardsInPlayTwo = [];
 
 let round = 0;
 
-function playWar() {
+function startWar () {
+    for (i = 0; i < 3; i++) {
+        warPile.unshift(playerOne[0]);
+        playerOne.shift();
+    }   
+    for (i = 0; i < 3; i++) {
+        warPile.unshift(playerTwo[0]);
+        playerTwo.shift();   
+    }
+    console.log("I\nDe-\nClare\nWar!");
     flipCards();
-    console.log("I");
-    flipCards();
-    console.log("De-")
-    flipCards();
-    console.log("clare")
-    flipCards();
-    console.log("War!")
-    showFlipped();
+    compareWar();
 }
 
-function playRound() {
-    round += 1;
-    flipCards();
-    showFlipped();
+function compareRank() {
     if (cardsInPlayOne[0].rank > cardsInPlayTwo[0].rank) {
-        playerOne.push(cardsInPlayOne[0], cardsInPlayTwo[0]);
-        cardsInPlayOne.pop();
-        cardsInPlayTwo.pop();
+        //update push as playerOne.push(...cardsInPlayOne, ...cardsInPlayTwo)?
+        //To account for when war is 
+        playerOne.push(...cardsInPlayOne, ...cardsInPlayTwo);
+        cardsInPlayOne = [];
+        cardsInPlayTwo = [];
         console.log(`PlayerOne wins Round ${round}! \n\n  PlayerOne: ${playerOne.length} Cards \n  PlayerTwo: ${playerTwo.length} cards`)
-        checkForWinner();
+        checkGame();
     } else if (cardsInPlayOne[0].rank < cardsInPlayTwo[0].rank) {
-        playerTwo.push(cardsInPlayOne[0], cardsInPlayTwo[0]);
-        cardsInPlayOne.pop();
-        cardsInPlayTwo.pop();
+        playerTwo.push(...cardsInPlayOne, ...cardsInPlayTwo);
+        cardsInPlayOne = [];
+        cardsInPlayTwo = [];
         console.log(`PlayerTwo wins Round ${round}! \n\n  PlayerOne: ${playerOne.length} Cards \n  PlayerTwo: ${playerTwo.length} cards`)
-        checkForWinner();
+        checkGame();
     } else {
-        playWar();
+        startWar();
     }
 }
 
-function checkForWinner() {
+
+function startRound() {
+    round += 1;
+    flipCards();
+    compareRank();
+}
+
+function checkGame() {
     if (playerOne.length === 0) {
         console.log("Congratulations, PlayerTwo!")
     } else if (playerTwo.length === 0) {
         console.log("Congratulations, PlayerOne!")
     } else {
-        playRound();
+        startRound();
     }
 }
 
@@ -87,17 +96,14 @@ function flipCards() {
     cardsInPlayOne.unshift(playerOne[0]);
     playerOne.shift();
     cardsInPlayTwo.unshift(playerTwo[0]);
-    playerTwo.shift();   
-}
-
-function showFlipped () {
+    playerTwo.shift();
     console.log(`PlayerOne flipped ${cardsInPlayOne[0].value} of ${cardsInPlayOne[0].suit}\n\nPlayerTwo flipped ${cardsInPlayTwo[0].value} of ${cardsInPlayTwo[0].suit}`)
 }
 
 function shuffle() {
-    //Shuffle
-    for (let i = deck.length - 1; i >= 0; i--) {
-        let j = Math.floor(Math.random() * (i));
+    //Fisher-Yates Algorithm for shuffling
+    for (let i = deck.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
         let holder = deck[i];
         deck[i] = deck[j];
         deck[j] = holder;
@@ -109,7 +115,7 @@ function shuffle() {
             playerTwo.unshift(deck[i])
         } 
     }
-    playRound();
+    startRound();
 }
 
 function createDeck () {
@@ -145,4 +151,6 @@ shuffle();
 
 // function dealHands()
 // function compareRank();
+
+//////////////
 
