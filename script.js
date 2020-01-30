@@ -32,42 +32,32 @@ Compare ranks --> compare the ranks of each card in the cardsInPlay array
 
 let startDeck = [];
 
-let suits = ['◆','❥', '♣', '♠']
-let values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
+let suits = ['◆','♥️', '♣', '♠']
+let value = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
 
 let playerOne = [];
 let playerTwo = [];
+
 let cardsInPlayOne = [];
 let cardsInPlayTwo = [];
-
-function createDeck () {
-    for (i=0; i < suits.length; i++) {
-        for (j=0; j < values.length; j++) {
-            let card = {suit: suits[i], values: values[j], rank: j + 1};
-            startDeck.push(card);
-        }
-    }
-    return startDeck;
-}
 
 function playWar() {
     flipCards();
     flipCards();
     flipCards();
     flipCards();
-
 }
 
 function playRound() {
     flipCards();
-    if (cardsInPlay[0].rank > cardsInPlay[1].rank) {
-        playerOne.push(cardsInPlay[0], cardsInPlay[1]);
-        cardsInPlay.pop();
-        cardsInPlay.pop();
-    } else if (cardsInPlay[0].rank < cardsInPlay[1].rank) {
-        playerTwo.push(cardsInPlay[0], cardsInPlay[1]);
-        cardsInPlay.pop();
-        cardsInPlay.pop();
+    if (cardsInPlayOne[0].rank > cardsInPlayTwo[0].rank) {
+        playerOne.push(cardsInPlayOne[0], cardsInPlayTwo[0]);
+        cardsInPlayOne.pop();
+        cardsInPlayTwo.pop();
+    } else if (cardsInPlayOne[0].rank < cardsInPlayTwo[0].rank) {
+        playerTwo.push(cardsInPlayOne[0], cardsInPlayTwo[0]);
+        cardsInPlayOne.pop();
+        cardsInPlayTwo.pop();
     } else {
         playWar();
     }
@@ -75,20 +65,43 @@ function playRound() {
 
 function flipCards() {
     cardsInPlayOne.unshift(playerOne[0]);
-    shift.playerOne;
+    playerOne.shift();
+    console.log(`PlayerOne flipped ${cardsInPlayOne[0].value} of ${cardsInPlayOne[0].suit}`)
     cardsInPlayTwo.unshift(playerTwo[0]);
-    shift.playerTwo;
+    playerTwo.shift();
+    console.log(`PlayerOne flipped ${cardsInPlayTwo[0].value} of ${cardsInPlayTwo[0].suit}`)
 }
 
-function deal(startDeck) {
+function shuffle() {
     //Shuffle
     for (let i = startDeck.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
-        let temp = startDeck[i];
+        let holder = startDeck[i];
         startDeck[i] = startDeck[j];
-        startDeck[j] = temp;
+        startDeck[j] = holder;
     }
+    for (let i = 0; i < startDeck.length; i++) {
+        if (i % 2 === 0) {
+            playerOne.unshift(startDeck[i])
+        } else {
+            playerTwo.unshift(startDeck[i])
+        } 
+    }
+    playRound();
 }
+
+function createDeck () {
+    for (i=0; i < suits.length; i++) {
+        for (j=0; j < value.length; j++) {
+            let card = {suit: suits[i], value: value[j], rank: j + 2};
+            startDeck.push(card);
+        }
+    }
+    return startDeck;
+}
+
+createDeck();
+shuffle();
 
 // let POneCard;
 // let PTwoCard;
