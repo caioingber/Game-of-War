@@ -64,6 +64,8 @@ function playRound() {
     }
 }
 
+//Currently producing infinite loop, playWar definition has not been complete
+
 function checkForWinner() {
     if (playerOne.length === 0) {
         console.log("Congratulations, PlayerTwo!")
