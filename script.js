@@ -51,13 +51,26 @@ function playRound() {
         playerOne.push(cardsInPlayOne[0], cardsInPlayTwo[0]);
         cardsInPlayOne.pop();
         cardsInPlayTwo.pop();
-        console.log()
+        console.log(`PlayerOne wins the round! \n\n  PlayerOne: ${playerOne.length} Cards \n  PlayerTwo: ${playerTwo.length} cards`)
+        checkForWinner();
     } else if (cardsInPlayOne[0].rank < cardsInPlayTwo[0].rank) {
         playerTwo.push(cardsInPlayOne[0], cardsInPlayTwo[0]);
         cardsInPlayOne.pop();
         cardsInPlayTwo.pop();
+        console.log(`PlayerTwo wins the round! \n\n  PlayerOne: ${playerOne.length} Cards \n  PlayerTwo: ${playerTwo.length} cards`)
+        checkForWinner();
     } else {
-        playWar();
+        checkForWinner();
+    }
+}
+
+function checkForWinner() {
+    if (playerOne.length === 0) {
+        console.log("Congratulations, PlayerTwo!")
+    } else if (playerTwo.length === 0) {
+        console.log("Congratulations, PlayerOne!")
+    } else {
+        playRound();
     }
 }
 
