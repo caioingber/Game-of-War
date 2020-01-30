@@ -40,9 +40,13 @@ let cardsInPlayTwo = [];
 
 function playWar() {
     flipCards();
+    console.log("I");
     flipCards();
+    console.log("De-")
     flipCards();
+    console.log("clare")
     flipCards();
+    console.log("War!")
 }
 
 function playRound() {
@@ -60,7 +64,7 @@ function playRound() {
         console.log(`PlayerTwo wins the round! \n\n  PlayerOne: ${playerOne.length} Cards \n  PlayerTwo: ${playerTwo.length} cards`)
         checkForWinner();
     } else {
-        checkForWinner();
+        playWar();
     }
 }
 
@@ -79,10 +83,10 @@ function checkForWinner() {
 function flipCards() {
     cardsInPlayOne.unshift(playerOne[0]);
     playerOne.shift();
-    console.log(`PlayerOne flipped ${cardsInPlayOne[0].value} of ${cardsInPlayOne[0].suit}`)
+    // console.log(`PlayerOne flipped ${cardsInPlayOne[0].value} of ${cardsInPlayOne[0].suit}`)
     cardsInPlayTwo.unshift(playerTwo[0]);
     playerTwo.shift();
-    console.log(`PlayerTwo flipped ${cardsInPlayTwo[0].value} of ${cardsInPlayTwo[0].suit}`)
+    // console.log(`PlayerTwo flipped ${cardsInPlayTwo[0].value} of ${cardsInPlayTwo[0].suit}`)
 }
 
 function shuffle() {
