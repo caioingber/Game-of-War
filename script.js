@@ -40,19 +40,26 @@ let cardsInPlayOne = [];
 let cardsInPlayTwo = [];
 
 let round = 0;
+let warDeclared = false;
 
 function startWar () {
-    for (i = 0; i < 3; i++) {
-        warPile.unshift(playerOne[0]);
-        playerOne.shift();
-    }   
-    for (i = 0; i < 3; i++) {
-        warPile.unshift(playerTwo[0]);
-        playerTwo.shift();   
+    if (playerOne.length < 4) {
+        console.log("Congratulations, PlayerTwo!")
+    } else if (playerTwo.length < 4) {
+        console.log("Congratulations PlayerOne!")
+    } else {
+        for (i = 0; i < 3; i++) {
+            warPile.unshift(playerOne[0]);
+            playerOne.shift();
+        }   
+        for (i = 0; i < 3; i++) {
+            warPile.unshift(playerTwo[0]);
+            playerTwo.shift();   
+        }
+        console.log("I\nDe-\nClare\nWar!");
+        flipCards();
+        compareRank();
     }
-    console.log("I\nDe-\nClare\nWar!");
-    flipCards();
-    compareWar();
 }
 
 function compareRank() {
@@ -60,16 +67,25 @@ function compareRank() {
         //update push as playerOne.push(...cardsInPlayOne, ...cardsInPlayTwo)?
         //To account for when war is 
         playerOne.push(...cardsInPlayOne, ...cardsInPlayTwo);
+        playerOne.push(...warPile);
         cardsInPlayOne = [];
         cardsInPlayTwo = [];
+        warPile = [];
         console.log(`PlayerOne wins Round ${round}! \n\n  PlayerOne: ${playerOne.length} Cards \n  PlayerTwo: ${playerTwo.length} cards`)
+        warDeclared = false;
         checkGame();
     } else if (cardsInPlayOne[0].rank < cardsInPlayTwo[0].rank) {
         playerTwo.push(...cardsInPlayOne, ...cardsInPlayTwo);
+        playerTwo.push(...warPile);
         cardsInPlayOne = [];
         cardsInPlayTwo = [];
+        warPile = [];
         console.log(`PlayerTwo wins Round ${round}! \n\n  PlayerOne: ${playerOne.length} Cards \n  PlayerTwo: ${playerTwo.length} cards`)
+        warDeclared = false;
         checkGame();
+    } else if (cardsInPlayOne[0].rank === cardsInPlayTwo[0].rank && warDeclared === false) {
+        warDeclared = true;
+        startWar();
     } else {
         startWar();
     }
