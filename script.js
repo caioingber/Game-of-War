@@ -75,7 +75,7 @@ function compareRank() {
         warDeclared = false;
         checkGame();
     } else if (cardsInPlayOne[0].rank < cardsInPlayTwo[0].rank) {
-        playerTwo.push(...cardsInPlayOne, ...cardsInPlayTwo);
+        playerTwo.push(...cardsInPlayTwo, ...cardsInPlayOne);
         playerTwo.push(...warPile);
         cardsInPlayOne = [];
         cardsInPlayTwo = [];
@@ -100,9 +100,9 @@ function startRound() {
 
 function checkGame() {
     if (playerOne.length === 0) {
-        console.log("Congratulations, PlayerTwo!")
+        console.log("Congratulations, PlayerTwo!\n \n You've won the war!")
     } else if (playerTwo.length === 0) {
-        console.log("Congratulations, PlayerOne!")
+        console.log("Congratulations, PlayerOne!\n \n You've won the war!")
     } else {
         startRound();
     }
@@ -148,6 +148,7 @@ function newGame() {
     deck = [];
     playerOne = [];
     playerTwo = [];
+    round = 0;
     createDeck();
     shuffle();
 }
