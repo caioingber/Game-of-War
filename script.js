@@ -40,27 +40,32 @@ let cardsInPlayOne = [];
 let cardsInPlayTwo = [];
 
 let round = 0;
-let warDeclared = false;
+// let warDeclared = false;
 
 function startWar () {
-    if (playerOne.length < 4) {
-        console.log("Congratulations, PlayerTwo!")
-    } else if (playerTwo.length < 4) {
-        console.log("Congratulations PlayerOne!")
+    if (playerOne.length < 3) {
+        winnerMessage("PlayerTwo")
+    } else if (playerTwo.length < 3) {
+        winnerMessage("PlayerOne")
     } else {
-        for (i = 0; i < 3; i++) {
+        for (let i = 0; i < 2; i++) {
+            //conditional below for when player has less than 4 cards
+            // if (i > playerOne.length - 1) {
             warPile.unshift(playerOne[0]);
             playerOne.shift();
+            // }
         }   
-        for (i = 0; i < 3; i++) {
+        for (let i = 0; i < 2; i++) {
+            // if (i > playerTwo.length - 1) {
             warPile.unshift(playerTwo[0]);
-            playerTwo.shift();   
+            playerTwo.shift(); 
+            // }  
         }
-        console.log("I\nDe-\nClare\nWar!");
+        console.log("I\nDeclare\nWar!");
         flipCards();
         compareRank();
     }
-}
+ }
 
 function compareRank() {
     if (cardsInPlayOne[0].rank > cardsInPlayTwo[0].rank) {
@@ -72,7 +77,7 @@ function compareRank() {
         cardsInPlayTwo = [];
         warPile = [];
         console.log(`PlayerOne wins Round ${round}! \n\n  PlayerOne: ${playerOne.length} Cards \n  PlayerTwo: ${playerTwo.length} cards`)
-        warDeclared = false;
+        // warDeclared = false;
         checkGame();
     } else if (cardsInPlayOne[0].rank < cardsInPlayTwo[0].rank) {
         playerTwo.push(...cardsInPlayTwo, ...cardsInPlayOne);
@@ -81,12 +86,10 @@ function compareRank() {
         cardsInPlayTwo = [];
         warPile = [];
         console.log(`PlayerTwo wins Round ${round}! \n\n  PlayerOne: ${playerOne.length} Cards \n  PlayerTwo: ${playerTwo.length} cards`)
-        warDeclared = false;
+        // warDeclared = false;
         checkGame();
-    } else if (cardsInPlayOne[0].rank === cardsInPlayTwo[0].rank && warDeclared === false) {
-        warDeclared = true;
-        startWar();
     } else {
+        // warDeclared = true;
         startWar();
     }
 }
@@ -98,15 +101,21 @@ function startRound() {
     compareRank();
 }
 
+function winnerMessage(player) {
+    console.log(`Congratulations, ${player}!\n\n You've won the battle, but have you won the war?\n\n Type 'newGame()' in the console to find out!`)
+}
+
 function checkGame() {
     if (playerOne.length === 0) {
-        console.log("Congratulations, PlayerTwo!\n \n You've won the war!")
+        winnerMessage("PlayerTwo")
     } else if (playerTwo.length === 0) {
-        console.log("Congratulations, PlayerOne!\n \n You've won the war!")
+        winnerMessage("PlayerOne")
     } else {
         startRound();
     }
 }
+
+
 
 function flipCards() {
     cardsInPlayOne.unshift(playerOne[0]);
@@ -148,6 +157,9 @@ function newGame() {
     deck = [];
     playerOne = [];
     playerTwo = [];
+    warPile = [];
+    cardsInPlayOne = [];
+    cardsInPlayTwo = [];
     round = 0;
     createDeck();
     shuffle();
@@ -168,6 +180,3 @@ shuffle();
 
 // function dealHands()
 // function compareRank();
-
-//////////////
-
