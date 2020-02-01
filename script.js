@@ -43,19 +43,19 @@ let round = 0;
 // let warDeclared = false;
 
 function startWar () {
-    if (playerOne.length < 3) {
+    if (playerOne.length < 2) {
         winnerMessage("PlayerTwo")
-    } else if (playerTwo.length < 3) {
+    } else if (playerTwo.length < 2) {
         winnerMessage("PlayerOne")
     } else {
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 1; i++) {
             //conditional below for when player has less than 4 cards
             // if (i > playerOne.length - 1) {
             warPile.unshift(playerOne[0]);
             playerOne.shift();
             // }
         }   
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 1; i++) {
             // if (i > playerTwo.length - 1) {
             warPile.unshift(playerTwo[0]);
             playerTwo.shift(); 
@@ -114,8 +114,6 @@ function checkGame() {
         startRound();
     }
 }
-
-
 
 function flipCards() {
     cardsInPlayOne.unshift(playerOne[0]);
