@@ -1,11 +1,3 @@
-let suits = ['◆','♥️', '♣', '♠']
-let value = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
-
-let warPile = [];
-
-let cardsInPlayOne = [];
-let cardsInPlayTwo = [];
-
 let round = 0;
 
 class Card {
@@ -48,16 +40,16 @@ class Deck {
     }
 }
 
-class Board {
-    constructor() {
+class Game { 
+    constructor(round) {
+        this.round = round
         this.warPile = []
-        this.cardsInPlayOne = []
-        this.cardsInPlayTwo = []
+        this.cardsInPlay = []
         this.players = [new Player ("Player One"), new Player ("Player Two")]
         this.deck = new Deck ()
         this.deck.shuffle();
     } 
-    deal = () => {    
+    deal() {    
         for (let i = 0; i < this.deck.length; i++) {
             if (i % 2 === 0) {
                 this.players[0].hand.unshift(this.deck.cards[i])
@@ -67,7 +59,16 @@ class Board {
         }
         this.deck = []
     }
+    flipCards() {
+        this.round += 1
+        this.cardsInPlay.unshift(this.players[0].hand[0]);
+        this.players[0].hand.shift();
+        this.cardsInPlay.unshift(this.players[1].hand[1]);
+        this.players[1].hand.shift();
+        // console.log(`PlayerOne flipped ${cardsInPlayOne[0].value} of ${cardsInPlayOne[0].suit}\n\nPlayerTwo flipped ${cardsInPlayTwo[0].value} of ${cardsInPlayTwo[0].suit}`)
+    }
 }
 
-let gameBoard = new Board ()
-gameBoard.deal()
+let game = new Game(0)
+game.deal()
+game.flipCards()
