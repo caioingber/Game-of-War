@@ -41,8 +41,8 @@ class Deck {
 }
 
 class Game { 
-    constructor(round) {
-        this.round = round
+    constructor() {
+        this.round = 0
         this.warPile = []
         this.cardsInPlay = []
         this.players = [new Player ("Player One"), new Player ("Player Two")]
@@ -58,17 +58,42 @@ class Game {
             }
         }
         this.deck = []
+        this.startRound()
+    }
+    startRound() {
+        this.round += 1;
+        this.flipCards();
+        this.compareRank();
     }
     flipCards() {
-        this.round += 1
         this.cardsInPlay.unshift(this.players[0].hand[0]);
         this.players[0].hand.shift();
         this.cardsInPlay.unshift(this.players[1].hand[1]);
         this.players[1].hand.shift();
-        // console.log(`PlayerOne flipped ${cardsInPlayOne[0].value} of ${cardsInPlayOne[0].suit}\n\nPlayerTwo flipped ${cardsInPlayTwo[0].value} of ${cardsInPlayTwo[0].suit}`)
+        console.log(`${this.players[0].name} flipped ${this.cardsInPlay[0].rank} of ${this.cardsInPlay[0].suit}\n\n${this.players[1].name} flipped ${this.cardsInPlay[1].rank} of ${this.cardsInPlay[1].suit}`)
+    }
+    collectWinnings(a,b) {
+        this.players[a].hand.push(...this.cardsInPlay);
+        this.players[b].hand.push(...this.warPile);
+        this.cardsInPlay = []
+        this.warPile = [];
+        console.log(`${this.players[a].name} wins Round ${this.round}! \n\n  ${this.players[a].name}: ${this.players[a].hand.length} Cards \n  ${this.players[b].name}: ${this.players[b].hand.length} cards`)
+        this.startRound()
+    }
+    compareRank() {
+        if (this.cardsInPlay[0].score > this.cardsInPlay[1].score) {
+            //update push as playerOne.push(...cardsInPlayOne, ...cardsInPlayTwo)?
+            //To account for when war is 
+            this.collectWinnings(0,1);
+            // checkGame();
+        } else if (this.cardsInPlay[0].score < this.cardsInPlay[1].score) {
+            this.collectWinnings(1,0)
+            // checkGame();
+        } else {
+            // startWar();
+        }
     }
 }
 
-let game = new Game(0)
+let game = new Game()
 game.deal()
-game.flipCards()
