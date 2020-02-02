@@ -23,7 +23,9 @@ Compare ranks --> compare the ranks of each card in the cardsInPlay array
     Print message "roundWinner + wins + roundNumber." "Cards played: pOneCard.attributes + pTwoCard.attributes"
     Both cards then go into the winning players array,
     Print message" PlayerOne now has playerOne.length cards, playerTwo now has playerTwo.length cards"
-    if playerOneCard === playerTwoCard, play war (function must be declared globally), see below section for info
+    if playerOneCard === playerTwoCard, play war (function must be declared globally)
+If War is declared, each player must send three cards 'facedown' into a separate pile and flip the last card face up
+    At this point, we must compare ranks and loop the comparison. A condition will be made so that if either player's deck is less than 4 && war declared, they will lose by default.
 
 
 */
@@ -43,28 +45,29 @@ let round = 0;
 // let warDeclared = false;
 
 function startWar () {
-    if (playerOne.length < 2) {
-        winnerMessage("PlayerTwo")
-    } else if (playerTwo.length < 2) {
-        winnerMessage("PlayerOne")
-    } else {
-        for (let i = 0; i < 1; i++) {
+    // if (playerOne.length === 0) {
+    //     winnerMessage("PlayerTwo")
+    // } else if (playerTwo.length === 0) {
+    //     winnerMessage("PlayerOne")
+    // } else {
+        for (let i = 0; i < 3; i++) {
             //conditional below for when player has less than 4 cards
-            // if (i > playerOne.length - 1) {
-            warPile.unshift(playerOne[0]);
-            playerOne.shift();
-            // }
+            if (i >= playerOne.length - 1) {
+            } else {
+                warPile.unshift(playerOne[0]);
+                playerOne.shift();
+            }
         }   
-        for (let i = 0; i < 1; i++) {
-            // if (i > playerTwo.length - 1) {
-            warPile.unshift(playerTwo[0]);
-            playerTwo.shift(); 
-            // }  
+        for (let i = 0; i < 3; i++) {
+            if (i >= playerTwo.length - 1) {
+            } else {
+                warPile.unshift(playerTwo[0]);
+                playerTwo.shift();
+            }
         }
-        console.log("I\nDeclare\nWar!");
+        console.log("I\nDe\nclare\nWar!");
         flipCards();
-        compareRank();
-    }
+    // }
  }
 
 function compareRank() {
@@ -89,8 +92,13 @@ function compareRank() {
         // warDeclared = false;
         checkGame();
     } else {
-        // warDeclared = true;
-        startWar();
+        if (playerOne.length === 0) {
+            winnerMessage("PlayerTwo")
+        } else if (playerTwo.length === 0) {
+            winnerMessage("PlayerOne")
+        } else {
+            startWar();
+        }
     }
 }
 
@@ -98,7 +106,6 @@ function compareRank() {
 function startRound() {
     round += 1;
     flipCards();
-    compareRank();
 }
 
 function winnerMessage(player) {
@@ -121,6 +128,7 @@ function flipCards() {
     cardsInPlayTwo.unshift(playerTwo[0]);
     playerTwo.shift();
     console.log(`PlayerOne flipped ${cardsInPlayOne[0].value} of ${cardsInPlayOne[0].suit}\n\nPlayerTwo flipped ${cardsInPlayTwo[0].value} of ${cardsInPlayTwo[0].suit}`)
+    compareRank();
 }
 
 function shuffle() {

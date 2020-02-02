@@ -1,5 +1,3 @@
-let round = 0;
-
 class Card {
     constructor(suit, rank, score) {
         this.suit = suit
@@ -30,7 +28,7 @@ class Deck {
             }
         }   
     }
-
+    //Fisher-Yates algorithm
     shuffle = () => {
         for (let i = this.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
@@ -87,9 +85,15 @@ class Game {
         } else if (this.players[0].cardsInPlay[0].score < this.players[1].cardsInPlay[0].score) {
             this.collectWinnings(1,0)
         } else {
+            if (this.players[0].hand.length === 0) {
+                this.winnerMessage(this.players[1].name)
+            } else if (this.players[1].hand.length === 0) {
+                this.winnerMessage(this.players[0].name)
+            } else {
             this.startWar();
         }
     }
+}
     
     checkGame() {
         if (this.players[0].hand.length === 0) {
@@ -106,23 +110,28 @@ class Game {
     }
 
     startWar() {
-        if (this.players[0].hand.length < 2) {
-            this.winnerMessage(this.players[1].name)
-        } else if (this.players[1].hand.length < 2) {
-            this.winnerMessage(this.players[0].name)
-        } else {
-            for (let i = 0; i < 1; i++) {
-                this.warPile.unshift(this.players[0].hand[0]);
-                this.players[0].hand.shift()
+        // if (this.players[0].hand.length < 4) {
+        //     this.winnerMessage(this.players[1].name)
+        // } else if (this.players[1].hand.length < 4) {
+        //     this.winnerMessage(this.players[0].name)
+        // } else {
+            for (let i = 0; i < 3; i++) {
+                if (i >= this.players[0].hand.length - 1){
+                } else{
+                    this.warPile.unshift(this.players[0].hand[0]);
+                    this.players[0].hand.shift()
+                }
             }   
-            for (let i = 0; i < 1; i++) {
-                this.warPile.unshift(this.players[1].hand[0]);
-                this.players[1].hand.shift()
+            for (let i = 0; i < 3; i++) {
+                if (i >= this.players[1].hand.length - 1){
+                } else{
+                    this.warPile.unshift(this.players[1].hand[0]);
+                    this.players[1].hand.shift()
+                }
             }
-            console.log("I\nDeclare\nWar!");
+            console.log("I\nDe-\nclare\nWar!");
             this.flipCards();
         }
-    }
 }
 
 let game = new Game()
