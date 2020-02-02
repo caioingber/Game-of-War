@@ -46,8 +46,6 @@ class Game {
         this.round = 0
         this.warPile = []
         this.players = [new Player ("Player One"), new Player ("Player Two")]
-        let playerOne = this.players[0]
-        let playerTwo = this.players[1]
         this.deck = new Deck ()
         this.deck.shuffle();
     } 
@@ -65,7 +63,6 @@ class Game {
     startRound() {
         this.round += 1;
         this.flipCards();
-        this.compareRank();
     }
     flipCards() {
         this.players[0].cardsInPlay.unshift(this.players[0].hand[0]);
@@ -73,10 +70,11 @@ class Game {
         this.players[1].cardsInPlay.unshift(this.players[1].hand[0]);
         this.players[1].hand.shift();
         console.log(`${this.players[0].name} flipped ${this.players[0].cardsInPlay[0].rank} of ${this.players[0].cardsInPlay[0].suit}\n\n${this.players[1].name} flipped ${this.players[1].cardsInPlay[0].rank} of ${this.players[1].cardsInPlay[0].suit}`)
+        this.compareRank();
     }
     collectWinnings(a,b) {
-        this.players[a].hand.push(...this.players[a].cardsInPlay, ...this.players[b].cardsInPlay);
         this.players[a].hand.push(...this.warPile);
+        this.players[a].hand.push(...this.players[a].cardsInPlay, ...this.players[b].cardsInPlay);
         this.players[a].cardsInPlay = []
         this.players[b].cardsInPlay = []
         this.warPile = [];
@@ -85,8 +83,6 @@ class Game {
     }
     compareRank() {
         if (this.players[0].cardsInPlay[0].score > this.players[1].cardsInPlay[0].score) {
-            //update push as playerOne.push(...cardsInPlayOne, ...cardsInPlayTwo)?
-            //To account for when war is 
             this.collectWinnings(0,1);
         } else if (this.players[0].cardsInPlay[0].score < this.players[1].cardsInPlay[0].score) {
             this.collectWinnings(1,0)
@@ -97,19 +93,23 @@ class Game {
     
     checkGame() {
         if (this.players[0].hand.length === 0) {
-            console.log("Player Two wins!")
+            this.winnerMessage(this.players[1].name)
         } else if (this.players[1].hand.length === 0) {
-            console.log("Player One wins!")
+            this.winnerMessage(this.players[0].name)
         } else {
             this.startRound();
         }
     }
 
+    winnerMessage(player) {
+        console.log(`Congratulations, ${player}!\n\n You've won the battle, but have you won the war?\n\n Click on 'New Game' to find out!`)
+    }
+
     startWar() {
         if (this.players[0].hand.length < 2) {
-            console.log("Player Two wins!")
+            this.winnerMessage(this.players[1].name)
         } else if (this.players[1].hand.length < 2) {
-            console.log("Player One wins!")
+            this.winnerMessage(this.players[0].name)
         } else {
             for (let i = 0; i < 1; i++) {
                 this.warPile.unshift(this.players[0].hand[0]);
@@ -117,11 +117,10 @@ class Game {
             }   
             for (let i = 0; i < 1; i++) {
                 this.warPile.unshift(this.players[1].hand[0]);
-                this.players[0].hand.shift()
+                this.players[1].hand.shift()
             }
             console.log("I\nDeclare\nWar!");
             this.flipCards();
-            this.compareRank();
         }
     }
 }
