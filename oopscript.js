@@ -12,12 +12,13 @@ class Player {
     constructor(name) {
         this.name = name
         this.hand = []
+        this.cardsInPlay = []
     }
 }
 
 class Deck {
     constructor () {
-        this.suit = ['Hearts', 'Spades', 'Clubs', 'Diamonds']
+        this.suit = ['◆','♥️', '♣', '♠']
         this.rank = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
         this.score = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
         this.cards = []
@@ -44,8 +45,9 @@ class Game {
     constructor() {
         this.round = 0
         this.warPile = []
-        this.cardsInPlay = []
         this.players = [new Player ("Player One"), new Player ("Player Two")]
+        let playerOne = this.players[0]
+        let playerTwo = this.players[1]
         this.deck = new Deck ()
         this.deck.shuffle();
     } 
@@ -66,34 +68,77 @@ class Game {
         this.compareRank();
     }
     flipCards() {
-        this.cardsInPlay.unshift(this.players[0].hand[0]);
+        this.players[0].cardsInPlay.unshift(this.players[0].hand[0]);
         this.players[0].hand.shift();
-        this.cardsInPlay.unshift(this.players[1].hand[1]);
+        this.players[1].cardsInPlay.unshift(this.players[1].hand[0]);
         this.players[1].hand.shift();
-        console.log(`${this.players[0].name} flipped ${this.cardsInPlay[0].rank} of ${this.cardsInPlay[0].suit}\n\n${this.players[1].name} flipped ${this.cardsInPlay[1].rank} of ${this.cardsInPlay[1].suit}`)
+        console.log(`${this.players[0].name} flipped ${this.players[0].cardsInPlay[0].rank} of ${this.players[0].cardsInPlay[0].suit}\n\n${this.players[1].name} flipped ${this.players[1].cardsInPlay[0].rank} of ${this.players[1].cardsInPlay[0].suit}`)
     }
     collectWinnings(a,b) {
-        this.players[a].hand.push(...this.cardsInPlay);
-        this.players[b].hand.push(...this.warPile);
-        this.cardsInPlay = []
+        this.players[a].hand.push(...this.players[a].cardsInPlay, ...this.players[b].cardsInPlay);
+        this.players[a].hand.push(...this.warPile);
+        this.players[a].cardsInPlay = []
+        this.players[b].cardsInPlay = []
         this.warPile = [];
         console.log(`${this.players[a].name} wins Round ${this.round}! \n\n  ${this.players[a].name}: ${this.players[a].hand.length} Cards \n  ${this.players[b].name}: ${this.players[b].hand.length} cards`)
-        this.startRound()
+        this.checkGame()
     }
     compareRank() {
-        if (this.cardsInPlay[0].score > this.cardsInPlay[1].score) {
+        if (this.players[0].cardsInPlay[0].score > this.players[1].cardsInPlay[0].score) {
             //update push as playerOne.push(...cardsInPlayOne, ...cardsInPlayTwo)?
             //To account for when war is 
             this.collectWinnings(0,1);
-            // checkGame();
-        } else if (this.cardsInPlay[0].score < this.cardsInPlay[1].score) {
+        } else if (this.players[0].cardsInPlay[0].score < this.players[1].cardsInPlay[0].score) {
             this.collectWinnings(1,0)
-            // checkGame();
         } else {
-            // startWar();
+            this.startWar();
+        }
+    }
+    
+    checkGame() {
+        if (this.players[0].hand.length === 0) {
+            console.log("Player Two wins!")
+        } else if (this.players[1].hand.length === 0) {
+            console.log("Player One wins!")
+        } else {
+            this.startRound();
+        }
+    }
+
+    startWar() {
+        if (this.players[0].hand.length < 2) {
+            console.log("Player Two wins!")
+        } else if (this.players[1].hand.length < 2) {
+            console.log("Player One wins!")
+        } else {
+            for (let i = 0; i < 1; i++) {
+                this.warPile.unshift(this.players[0].hand[0]);
+                this.players[0].hand.shift()
+            }   
+            for (let i = 0; i < 1; i++) {
+                this.warPile.unshift(this.players[1].hand[0]);
+                this.players[0].hand.shift()
+            }
+            console.log("I\nDeclare\nWar!");
+            this.flipCards();
+            this.compareRank();
         }
     }
 }
 
 let game = new Game()
 game.deal()
+
+
+newGame = () => {
+    game.deck = new Deck();
+    game.players[0].hand = [];
+    game.players[1].hand = [];
+    game.warPile = [];
+    game.players[0].cardsInPlay = [];
+    game.players[1].cardsInPlay = [];
+    game.round = 0;
+    game.deck.shuffle();
+    game.deal();
+ }
+document.getElementById("button").addEventListener("click", newGame)

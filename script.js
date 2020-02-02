@@ -166,6 +166,7 @@ function newGame() {
 createDeck();
 shuffle();
 
+document.getElementById("button").addEventListener("click", newGame)
 // let POneCard;
 // let PTwoCard;
 // let roundWinner;
